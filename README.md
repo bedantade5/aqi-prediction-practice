@@ -12,31 +12,38 @@ This project uses the **AQI - Air Quality Index Scheduled Daily Update** dataset
 
 * **Source:** [https://www.kaggle.com/datasets/azminetoushikwasi/aqi-air-quality-index-scheduled-daily-update](https://www.kaggle.com/datasets/azminetoushikwasi/aqi-air-quality-index-scheduled-daily-update)
 
-To run this project, please download the `data_date.csv` file from the link above and place it in a `data/` folder.
+## 🛠️ Methodology
 
-## 🛠️ Project Status & Methodology
+A full end-to-end machine learning workflow was performed:
 
-This project is currently a work in progress.
-
-1.  **Data Loading:** The `data_date.csv` file is loaded.
-2.  **Exploratory Data Analysis (EDA):** Initial checks for null values and data types are performed.
+1.  **Data Loading:** The `data_date.csv` file was loaded using Pandas.
+2.  **Data Cleaning:** All rows with missing values (`dropna()`) were removed.
 3.  **Feature Engineering:**
-    * The `Date` column is split into `Year`, `Month`, and `Day` to be used as numerical features.
-    * The categorical `Country` column is one-hot encoded.
-4.  **Target Variable:**
-    * The `Status` column (our target) is converted from text to numerical categories using `LabelEncoder`.
-5.  **Model Training:**
-    * The data is split into an 80:20 training and testing set.
-    * A baseline **Decision Tree Classifier** is trained.
+    * The `Date` column was split into `Year`, `Month`, and `Day` to be used as numerical features.
+    * The categorical `Country` column was one-hot encoded using `pd.get_dummies()`.
+4.  **Target Encoding:**
+    * The `Status` column (our target) was converted from text to numerical categories (e.g., 0, 1, 2) using `LabelEncoder`.
+5.  **Model Training & Comparison:**
+    * The data was split into an 80:20 training and testing set.
+    * **Seven different models** were trained and evaluated to compare their performance.
+    * A `StandardScaler` was applied to the data for distance-based models (KNN) to test the effect of feature scaling.
 
-## 📈 Current Results
+## 📈 Results
 
-The initial Decision Tree Classifier achieved an accuracy of **~70.58%** on the test set.
+The final comparison of all models yielded a clear leaderboard. The `RandomForestClassifier` provided the highest accuracy "out of the box."
 
-Future steps will involve:
-* Trying other classification models (e.g., Random Forest, Gradient Boosting).
-* Performing hyperparameter tuning to improve accuracy.
-* Conducting a more in-depth feature analysis.
+### Final Model Leaderboard
+
+| Model | Accuracy |
+| :--- | :--- |
+| **Random Forest** | **75.82%** |
+| KNN (Scaled) | 74.74% |
+| XGBoost | 72.91% |
+| Decision Tree | 70.58% |
+| Logistic Regression | 67.97% |
+| KNN (Unscaled) | 58.02% |
+| AdaBoost | 57.13% |
+
 
 ## 🚀 How to Run
 
@@ -48,7 +55,7 @@ Future steps will involve:
 2.  Create a `data/` folder and place the `data_date.csv` file inside it.
 3.  Install the required libraries:
     ```bash
-    pip install pandas numpy scikit-learn
+    pip install pandas numpy scikit-learn xgboost matplotlib seaborn
     ```
 4.  Run the Jupyter Notebook.
     *(Note: You may need to update the file path in the notebook from `/kaggle/input/...` to `data/data_date.csv`.)*
